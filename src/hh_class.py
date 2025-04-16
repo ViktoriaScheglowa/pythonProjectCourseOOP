@@ -1,5 +1,6 @@
 import requests
-from abc_class import Parser
+
+from src.abc_class import Parser
 
 
 class HH(Parser):
@@ -22,7 +23,7 @@ class HH(Parser):
     def load_vacancies(self, keyword):
         self.__params['text'] = keyword
         while self.__params.get('page') != 2:
-            response = requests.get(self.url, headers=self.__headers, params=self.__params)
+            response = requests.get(self.__url, headers=self.__headers, params=self.__params)
             if response.status_code == 200:
                 vacancies = response.json()['items']
                 self.__vacancies.extend(vacancies)
