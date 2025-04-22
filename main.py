@@ -1,45 +1,28 @@
-from src.file_handler_class import FileHandler, FileHandlerBase
-from src.hh_class import HH
+from src.file_handler_class import FileHandler
+from src.hh_class import HH, HhBase
+from src.user_function import filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies, \
+    print_vacancies
 from src.vacancies_class import Vacancy
 
- #   if __name__ == '__main__':
-  #     filename = "job_hh.json"
- #       hh = HH(filename)
- #       file_handler = FileHandler(filename, mode="w")
-
- #       hh_vacancies = hh.load_vacancies("python")
-#        file_handler.write(hh.vacancies)
-
- #       for vacancies in hh.vacancies:
-  #          vacancies_class = Vacancy.get_vacancy(vacancies)
 
 # Создание экземпляра класса для работы с API сайтов с вакансиями
-hh_api = HH(file_worker)
+hh_api = HH()
+file_handler = FileHandler()
 
-# Получение вакансий с hh.ru в формате JSON
-hh_vacancies = hh_api.load_vacancies("Python")
-
-# Преобразование набора данных из JSON в список объектов
-vacancies_list = Vacancy.get_vacancy(hh_vacancies)
-
-# Пример работы контструктора класса с одной вакансией
-vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>", "100 000-150 000 руб.", "Требования: опыт работы от 3 лет...")
-
-# Сохранение информации о вакансиях в файл
-json_saver = FileHandler()
-json_saver.add_vacancy(vacancies_list)
-json_saver.delete_vacancy(vacancy)
 
 # Функция для взаимодействия с пользователем
 def user_interaction():
-    platforms = ["HeadHunter"]
     search_query = input("Введите поисковый запрос: ")
     top_n = int(input("Введите количество вакансий для вывода в топ N: "))
     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
-    salary_range = input("Введите диапазон зарплат: ") # Пример: 100000 - 150000
+    salary_range = input("Введите диапазон зарплат: ")  # Пример: 100000 - 150000
 
+    hh_vacancies = hh_api.load_vacancies(search_query)
+    vacancies_list = Vacancy.get_vacancy(hh_vacancies)
+    file_handler.add_vacancy(vacancies_list)
+
+    file_handler.del_vacancy(vacancies_list[0])
     filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
-
     ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
 
     sorted_vacancies = sort_vacancies(ranged_vacancies)

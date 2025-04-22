@@ -1,21 +1,24 @@
+class Vacancy():
+    __slots__ = ("id_vacancy", "name", "url", "salary_from", "salary_to", "requirement")
 
-class Vacancy:
-    def __init__(self, name: str, url: str, salary: str, requirement: str):
+    def __init__(self, id_vacancy: str, name: str, url: str, salary_from: float, salary_to: float, requirement: str):
+        self.id_vacancy = id_vacancy
         self.name = name
         self.url = url
-        self.salary = salary
-        self.salary_from = 0
-        self.salary_to = 0
+        self.salary_from = salary_from
+        self.salary_to = salary_to
         self.requirement = requirement
 
     def __str__(self):
-        return f"{self.name} {self.url} {self.salary} {self.requirement}"
+        """Магический метод для строкового отображения объекта"""
+        return f"{self.id_vacancy}{self.name} {self.url} {self.salary_from} {self.salary_to} {self.requirement}"
 
     @staticmethod
     def get_vacancy(list_hh_vacancy: list) -> list['Vacancy']:
+        """Получение вакансий в виде списка"""
         list_vacancy = []
-
         for dict_key in list_hh_vacancy:
+            id_vacancy = dict_key["id"]
             name = dict_key.get("name", "Нет названия")
             url = dict_key.get("url", "Нет url")
             requirement = dict_key.get("snippet", {}).get("requirement", "Нет requirement")
@@ -24,11 +27,13 @@ class Vacancy:
             price_from = salary["from"] if salary and salary["from"] else 0
             price_to = salary["to"] if salary and salary["to"] else 0
 
-            list_vacancy.append(Vacancy(name, url, price_from, price_to, requirement))
+            list_vacancy.append(Vacancy(id_vacancy, name, url, price_from, price_to, requirement))
         return list_vacancy
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """Шаблон вывода вакансий"""
         return {
+            "id_vacancy": self.id_vacancy,
             "name": self.name,
             "url": self.url,
             "salary_from": self.salary_from,
