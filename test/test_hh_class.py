@@ -1,4 +1,4 @@
-from requests import patch
+from unittest.mock import patch
 from src.hh_class import HH
 
 

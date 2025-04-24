@@ -1,0 +1,10 @@
+[][
+    {
+        "id_vacancy": "119764438",
+        "name": "Тестировщик QA",
+        "url": "https://api.hh.ru/vacancies/119764438?host=hh.ru",
+        "salary_from": 100000,
+        "salary_to": 130000,
+        "requirement": "Будет плюсом: – Опыт написания автотестов (UI и API), знание <highlighttext>Python</highlighttext> или JavaScript. – Владение инструментами для автоматизации (Selenium, Pytest, Playwright и..."
+    }
+]
