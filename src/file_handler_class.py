@@ -6,26 +6,21 @@ from src.vacancies_class import Vacancy
 
 
 class FileHandlerBase(ABC):
-    """Абстрактный класс"""
-    @abstractmethod
-    def write(self, text: list[dict], file_mode: str) -> None:
-        pass
+    """Абстрактный класс который перечисляет методы наследоваемых классов"""
 
     @abstractmethod
-    def open_file(self) -> None:
-        pass
-
+    def write(self, text: list[dict], file_mode: str) -> None: ...
     @abstractmethod
-    def add_vacancy(self, list_vacancy_hh: list[Vacancy]) -> None:
-        pass
-
+    def open_file(self) -> None: ...
     @abstractmethod
-    def del_vacancy(self, vacancy: Vacancy) -> None:
-        pass
+    def add_vacancy(self, list_vacancy_hh: list[Vacancy]) -> None: ...
+    @abstractmethod
+    def delete_vacancy(self, vacancy: Vacancy) -> None: ...
 
 
 class FileHandler(FileHandlerBase):
-    """Класс для работы с файлом"""
+    """Класс работы с файлом"""
+
     __slots__ = ("filename", "data_file")
     __filename: str
     data_file: list
@@ -34,6 +29,7 @@ class FileHandler(FileHandlerBase):
         self.__filename = "./data/" + filename
         self.data_file = []
 
+        # Создаем файл если он не создан
         self.open_file()
 
     def open_file(self) -> None:
@@ -46,7 +42,7 @@ class FileHandler(FileHandlerBase):
                 pass
 
     def write(self, text: list[dict], file_mode: str) -> None:
-        """Метод записи в файл"""
+        """Запись в файл"""
         with open(self.__filename, mode=file_mode, encoding="utf-8") as file:
             file.write(json.dumps(text, ensure_ascii=False, indent=4))
         self.data_file = text
@@ -57,11 +53,10 @@ class FileHandler(FileHandlerBase):
         list_vacancy = [vacancy.to_dict() for vacancy in list_vacancy_hh if vacancy.requirement not in list_ids]
         self.write(list_vacancy, "a")
 
-    def del_vacancy(self, vacancy: Vacancy) -> None:
-        """Метод удаления из файла вакансий"""
+    def delete_vacancy(self, vacancy: Vacancy) -> None:
+        """Удаление вакансии"""
         for index, data in enumerate(self.data_file):
             if data["id_vacancy"] == vacancy.id_vacancy:
-                print(data)
                 del self.data_file[index]
                 break
         self.write(self.data_file, "w")
